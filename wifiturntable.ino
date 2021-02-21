@@ -13,6 +13,8 @@ String msg = "";
 
 //define an LED output
 const int output_LED = D4;
+//define a pin for the BT shutter
+const int output_Shutter = D0;
 int Move;
 
 //for number of PICS
@@ -296,6 +298,8 @@ void setup()
     pinMode(output_LED, OUTPUT);
     digitalWrite(output_LED, LOW);
 
+    pinMode(output_Shutter, OUTPUT);
+
     //  Initialize Wi-Fi
     wifi_station_disconnect();
     wifi_set_opmode(0x02); // SETTING IT TO AP MODE
@@ -355,6 +359,10 @@ void loop()
 
         Motor_Delay(1000); //to allow time for phone to take pic
         digitalWrite(output_LED, LOW);
+        digitalWrite(output_Shutter,HIGH);
+        delay(100);
+        digitalWrite(output_Shutter,LOW);
+        delay(100);
     }
 
     if (PhotoTaken == sliderValue.toInt() && startPics)
