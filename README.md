@@ -4,6 +4,18 @@ A NoceMCU12E Based wifi turntable with an interactive site!
 ## Introduction
 A turntable that uses a NodeMCU as a webserver that hosts an interactive site, all to control a stepper motor that rotates a platform a certain amount of steps, pauses a bit, and then triggers a Bluetooth shutter that takes a picture of the object of interest. The resultsant photos are then used for photgrammetry reasaons!
 
+## Table of Contents
+- [WiFi-Turntable](#wifi-turntable)
+  * [Introduction](#introduction)
+  * [Table of Contents](#table-of-contents)
+  * [Components Used](#components-used)
+  * [How it works](#how-it-works)
+  * [Circuit Schematic](#circuit-schematic)
+  * [Physical Design](#physical-design)
+  * [Full Demo](#full-demo)
+  * [Acknowledgments](#acknowledgments)
+
+
 ## Components Used
 For this project, the used ocmponents are:
 <ul>
@@ -25,6 +37,13 @@ The micrcontroller acts as an access point (through the use of the ESPASynchWebS
 
 ## Circuit Schematic
 <b>[TO BE ADDED SOON]</b>
+
+## Physical Design
+<b>[TO BE ADDED SOON]</b>
+
+## Full Demo
+<b>[TO BE ADDED SOON]</b>
+
 ## Acknowledgments
 In no particular order, the following resources offored a great deal of technical info that was critical to the success of this project
 
