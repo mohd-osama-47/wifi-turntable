@@ -19,7 +19,7 @@ For this project, the used ocmponents are:
 ## How it works
 The micrcontroller acts as an access point (through the use of the ESPASynchWebServer library) and hosts a site that acts as the main interface for the whole project. The user can specify an even number of phots between 2 and 200. After the amount is specified (using a slider), the "Start!" button is pressed and the motor starts its movement. Depeneding on the number of photos taken, the motor travels an amount calculated in the code and then stops, which triggers the BT shutter to take a picture on a phone/device that is connected and is acting as the main camera. The process is repeated until either the user pauses (using the "Pause!" button), the user stops (by pressing "Pause!" twice or "Start!" once), or if the process is completed. The following is how the site looks like under use:
 
-<p style="text-align:center;">
+<p align="center">
   <img src="/media/demo.gif/" alt="GIF of the UI">
 </p>
 
