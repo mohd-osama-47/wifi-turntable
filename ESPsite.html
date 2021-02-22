@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ESP Turntable!</title>
+        <style>
+            html {
+                font-family: Arial;
+                display: inline-block;
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin: 0px 0px 20px 0px;
+            }
+            
+            p {
+                font-size: 1.3rem;
+                text-align: center;
+                padding: 5px 5px;
+                margin: 0px 0px 20px 0px;
+            }
+            
+            body {
+                font-family: "Dosis", Helvetica, Arial, sans-serif;
+                background: #ecf0f1;
+                color: #34495e;
+                padding-top: 40px;
+                text-shadow: white 1px 1px 1px;
+                /* width: 50%; */
+                /* height: 100vh; */
+                max-width: 400px;
+                margin: 0px auto;
+                padding-bottom: 25px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .value {
+                border-bottom: 4px dashed #bdc3c7;
+                text-align: center;
+                font-weight: bold;
+                font-size: 10em;
+                width: 50%;
+                height: 50%;
+                line-height: 3em;
+                margin: 3em auto;
+                letter-spacing: -.07em;
+                text-shadow: white 2px 2px 2px;
+                transition-duration: 200ms;
+            }
+            
+            input[type="range"] {
+                display: block;
+                -webkit-appearance: none;
+                background-color: #bdc3c7;
+                width: 300px;
+                height: 5px;
+                border-radius: 5px;
+                margin: 0 auto;
+                outline: 0;
+            }
+            
+            .button {
+                background-color: #4CAF50;
+                border: none;
+                border-radius: 2rem;
+                color: white;
+                padding: 0.6rem 1rem;
+                text-decoration: none;
+                font-size: 2rem;
+                margin: 2px;
+                cursor: pointer;
+                transition: background-color 200ms ease-in-out, transform 100ms ease-in-out;
+            }
+
+            .button.pause {
+                background-color: #47b47d;
+            }
+            
+            .button:active {
+                background-color: grey;
+                border: none;
+            }
+            
+            .button:hover {
+                transform: scale(1.2);
+            }
+            
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                background-color: #e74c3c;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                border: 2px solid white;
+                cursor: pointer;
+                transition: .3s ease-in-out;
+            }
+            
+            ​ input[type="range"]::-webkit-slider-thumb:hover {
+                background-color: white;
+                border: 2px solid #e74c3c;
+            }
+            
+            input[type="range"]::-webkit-slider-thumb:active {
+                transform: scale(1.6);
+            }
+            
+            .value {
+                /* border-bottom: 4px dashed #4ba8e6; */
+                /* text-align: center; */
+                font-weight: bold;
+                font-size: 8em;
+                width: 300px;
+                height: 100px;
+                line-height: 60px;
+                margin: 40px auto;
+                letter-spacing: -.07em;
+                text-shadow: white 2px 2px 2px;
+                transition: all 200ms;
+            }
+            
+            @media (max-width: 420px),
+            (max-height: 400px) {
+                html {
+                    font-size: 12px;
+                }
+            }
+        </style>
+
+        <script>
+            var sliderValue = 2;
+        </script>
+
+    </head>
+
+    <body>
+        <h1>ESP tableturner!</h2>
+            <p>Press the button after setting the amount of pictures desired to start the turntable. Press again to cancel the operation!</p>
+            <div id="textSliderValue" class="value">2</div>
+            <p><input type="range" onchange="updateSliderPWM(this)" id="pwmSlider" min="2" max="200" value="2" step="2" class="slider" data-show-value="true"></p>
+
+            <p>Current pic:
+                <div class="value" id="pic">%COUNTER%<span>&percnt;</span></div>
+            </p>
+
+            <p>
+                <input type="button" class="button" onclick="sendXHR(this)" value="Start!">
+               <input type="button" class="button pause" onclick="sendPAUSE(this)" value="Pause!">
+
+            </p>
+            <script>
+                if (!!window.EventSource) {
+                    var source = new EventSource('/events');
+
+                    source.addEventListener('open', function(e) {
+                        console.log("Events Connected");
+                    }, false);
+                    source.addEventListener('error', function(e) {
+                        if (e.target.readyState != EventSource.OPEN) {
+                            console.log("Events Disconnected");
+                        }
+                    }, false);
+
+                    source.addEventListener('message', function(e) {
+                        console.log("message", e.data);
+                    }, false);
+
+                    source.addEventListener('photocount', function(e) {
+                        console.log("photocount", e.data);
+                        document.getElementById("pic").innerHTML = e.data;
+                    }, false);
+
+                }
+
+                function updateSliderPWM(element) {
+                    sliderValue = document.getElementById("pwmSlider").value;
+                    document.getElementById("textSliderValue").innerHTML = sliderValue;
+                    console.log(sliderValue);
+                }
+
+                function sendXHR(element) {
+                    sliderValue = document.getElementById("pwmSlider").value;
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "/slider?value=" + sliderValue, true);
+                    xhr.send();
+                    // console.log(sliderValue);
+
+                }
+
+                function sendPAUSE(element) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "/slider?direction=" + "PAUSE", true);
+                    xhr.send();
+                    // console.log(sliderValue);
+                }
+
+                var elem = document.querySelector('input[type="range"]');
+
+                var rangeValue = function() {
+                    var newValue = elem.value;
+                    var target = document.querySelector('.value');
+                    target.innerHTML = newValue;
+                }
+
+                elem.addEventListener("input", rangeValue);
+            </script>
+    </body>
+
+</html>
