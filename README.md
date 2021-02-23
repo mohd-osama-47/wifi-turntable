@@ -14,6 +14,7 @@ A turntable that uses a NodeMCU as a webserver that hosts an interactive site, a
   * [Physical Design](#physical-design)
   * [Full Demo](#full-demo)
   * [Acknowledgments](#acknowledgments)
+  * [Future Work](#future-work)
 
 
 ## Components Used
@@ -43,6 +44,13 @@ The micrcontroller acts as an access point (through the use of the ESPASynchWebS
 
 ## Full Demo
 <b>[TO BE ADDED SOON]</b>
+
+## Future Work
+I would like to work on the following set of features in the future, but so far the basic core features of a photogtammetry turntable is met with good results.
+<ul>
+ <li>Create a <b>Constant Turning Mode</b> that turns the turntable into a neat countertop ddecoration item!</li>
+ <li>Add a form of animation to the site that shows shutter progress in a more "cool" manner, this one is rather ambigious, dont you think?</li>
+</ul>
 
 ## Acknowledgments
 In no particular order, the following resources offored a great deal of technical info that was critical to the success of this project
