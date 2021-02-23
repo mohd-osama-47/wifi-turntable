@@ -50,5 +50,5 @@ In no particular order, the following resources offored a great deal of technica
 <ul>
   <li><a href="https://randomnerdtutorials.com/" target="_blank">Random Nerd Tutorials:</a> Their tutorials on ESPs as webservers and other cool stuff</li>
   <li><a href="https://hackaday.io/Bribro12" target="_blank">Brian Brocken:</a> His Arduino-based turntable was an aspiration for this project</li>
- <li><a href="https://codepen.io/juanbrujo/pen/uIqaw" target="_blank">Jorge Epuñan:</a> Got the insperation for the slider from his CodePen page</li>
+ <li><a href="https://codepen.io/juanbrujo" target="_blank">Jorge Epuñan:</a> Got the insperation for the slider from his CodePen page</li>
 </ul>
