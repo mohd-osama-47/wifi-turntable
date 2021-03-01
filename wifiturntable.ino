@@ -37,7 +37,9 @@ bool startPause = false;
 
 //variabled for the turntable
 const int stepsPerRevolution = 2048;  // change this to fit the number of steps per revolution
-int FullRev = 7 * stepsPerRevolution; // 1 full revolution of the big gear -> Small-Big gear ratio is 7:1
+
+//The new gear ration is 5:1
+int FullRev = 5 * stepsPerRevolution; // 1 full revolution of the big gear -> Small-Big gear ratio is 7:1
 
 int PhotoTaken = 0; // Amount of photo's that have been taken
 int StepPerPhoto;   // Amount of steps per photo (calculated -> see MenuNr 0/SwMenu 2)
