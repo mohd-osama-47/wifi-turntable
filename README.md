@@ -56,7 +56,8 @@ I would like to work on the following set of features in the future, but so far 
 In no particular order, the following resources offored a great deal of technical info that was critical to the success of this project
 
 <ul>
-  <li><a href="https://randomnerdtutorials.com/" target="_blank">Random Nerd Tutorials:</a> Their tutorials on ESPs as webservers and other cool stuff</li>
+  <li><a href="https://randomnerdtutorials.com/" target="_blank">Random Nerd Tutorials:</a> Their tutorials on ESPs as webservers and other cool stuff were rather helpful!</li>
   <li><a href="https://hackaday.io/Bribro12" target="_blank">Brian Brocken:</a> His Arduino-based turntable was an aspiration for this project</li>
  <li><a href="https://codepen.io/juanbrujo" target="_blank">Jorge Epuñan:</a> Got the insperation for the slider from his CodePen page</li>
+ <li><a href="https://www.thingiverse.com/thing:4167615" target="_blank">QLRO's AAScan:</a> Used a slightly modified version of their Solidworks model for the turnttable</li>
 </ul>
