@@ -1,4 +1,7 @@
 # WiFi-Turntable
+<p align="center">
+  <img src="/media/title.png/" alt="Thumbnail">
+</p>
 A NoceMCU12E Based wifi turntable with an interactive site!
 
 ## Introduction
