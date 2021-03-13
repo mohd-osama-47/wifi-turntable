@@ -43,10 +43,13 @@ The micrcontroller acts as an access point (through the use of the ESPASynchWebS
 <b>[TO BE ADDED SOON]</b>
 
 ## Physical Design
-<b>[TO BE ADDED SOON]</b>
+The 3D model is based on AAScan, which is credited at the bottom. Their design uses a 5:1 gear ration so the code reflects that when it comes to the amount of steps needed for each picture to be taken.
 
 ## Full Demo
-<b>[TO BE ADDED SOON]</b>
+The following shows how the UI is used to initiaite the table to take 2 photos of a cube. The user slider can go up to 200 pictures but for showcase purposes I just went with 2 pictures. Ofcourse, a phone connected to the BT shutter is also needed to take a picture when the table stops rotating so that different pictures are taken.
+<p align="center">
+  <img src="/media/table_demo.gif/" alt="GIF of the phyiscal table">
+</p>
 
 ## Future Work
 I would like to work on the following set of features in the future, but so far the basic core features of a photogtammetry turntable is met with good results.
