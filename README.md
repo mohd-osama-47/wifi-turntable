@@ -40,7 +40,10 @@ The micrcontroller acts as an access point (through the use of the ESPASynchWebS
 </p>
 
 ## Circuit Schematic
-<b>[TO BE ADDED SOON]</b>
+The circuit is rather basic, a bluetooth shutter is used here to trigger a phone acting as a camera to take pictures. A transistor is soldered on the buttons and is connected to the NodeMCU so that the button can be triggered. Once the user specifies the amount of pictures, the steps are calculated in the controller and the motor is turned accordingly. The following is a very simplified overview of what tahe circuit is like:
+<p align="center">
+  <img src="/media/basic_overview/" alt="Basic Circuit Overview">
+</p>
 
 ## Physical Design
 The 3D model is based on AAScan, which is credited at the bottom. Their design uses a 5:1 gear ration so the code reflects that when it comes to the amount of steps needed for each picture to be taken.
@@ -48,7 +51,7 @@ The 3D model is based on AAScan, which is credited at the bottom. Their design u
 ## Full Demo
 The following shows how the UI is used to initiaite the table to take 2 photos of a cube. The user slider can go up to 200 pictures but for showcase purposes I just went with 2 pictures. Ofcourse, a phone connected to the BT shutter is also needed to take a picture when the table stops rotating so that different pictures are taken.
 <p align="center">
-  <img src="/media/table_demo.gif/" alt="GIF of the phyiscal table">
+  <img src="/media/table_demo.png/" alt="GIF of the phyiscal table">
 </p>
 
 ## Future Work
