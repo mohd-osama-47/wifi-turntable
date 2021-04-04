@@ -59,6 +59,7 @@ I would like to work on the following set of features in the future, but so far 
 <ul>
  <li>Create a <b>Constant Turning Mode</b> that turns the turntable into a neat countertop ddecoration item!</li>
  <li>Add a form of animation to the site that shows shutter progress in a more "cool" manner, this one is rather ambigious, dont you think?</li>
+ <li>Create a PCB for the whole project for better space managment, plus its cool to have it all in a "professional" look, right?</li>
 </ul>
 
 ## Acknowledgments
