@@ -44,6 +44,14 @@ The circuit is rather basic, a bluetooth shutter is used here to trigger a phone
 <p align="center">
   <img src="/media/basic_overview.png/" alt="Basic Circuit Overview">
 </p>
+When desgning the PCB, it was decided that all the main components (aside from the external shutter) will be integrated into one circuit. Essentially, the ULN2003 breakout is recreated (without the LEDs) into the circuit with a switch for controlling the supply and motor power separately. As for the shutter, the dimensions were measured as accurately as possible and a silk screen cutout was added so that the shutter can easily be mounted into the PCB. The following is the circuit schematic in more detail:
+<p align="center">
+  <img src="/media/circuit_schematic.jpg/" alt="Detailed Circuit Schematic">
+</p>
+the final result is rather small, with the dimensions being 62.23mm x 67.18mm. And here is the final PCB (the actual PCB is printed in black):
+<p align="center">
+  <img src="/media/pcb.jpg/" alt="Final PCB View">
+</p>
 
 ## Physical Design
 The 3D model is based on AAScan, which is credited at the bottom. Their design uses a 5:1 gear ration so the code reflects that when it comes to the amount of steps needed for each picture to be taken.
@@ -59,7 +67,7 @@ I would like to work on the following set of features in the future, but so far 
 <ul>
  <li>Create a <b>Constant Turning Mode</b> that turns the turntable into a neat countertop ddecoration item!</li>
  <li>Add a form of animation to the site that shows shutter progress in a more "cool" manner, this one is rather ambigious, dont you think?</li>
- <li>Create a PCB for the whole project for better space managment, plus its cool to have it all in a "professional" look, right?</li>
+ <li><s>Create a PCB for the whole project for better space managment, plus its cool to have it all in a "professional" look, right?</s></li>
 </ul>
 
 ## Acknowledgments
