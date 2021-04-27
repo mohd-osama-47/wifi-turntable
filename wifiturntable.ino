@@ -23,6 +23,8 @@ String sliderValue = "0";
 //for direction of rotation
 String pause_btn = "";
 
+String rotate_btn = "";
+
 //for the MOTOR PINS:
 #define motorPin1 D2
 #define motorPin2 D5
@@ -34,6 +36,9 @@ bool startPics = false;
 
 //flag for a temporary pause
 bool startPause = false;
+
+//flag for CW rotation
+bool startRotate = false;
 
 //variabled for the turntable
 const int stepsPerRevolution = 2048;  // change this to fit the number of steps per revolution
@@ -49,6 +54,8 @@ AccelStepper myStepper(4, motorPin1, motorPin3, motorPin2, motorPin4);
 
 const char *PARAM_INPUT = "value";
 const char *PAUSE_INPUT = "direction";
+const char *ROTATE_INPUT = "rotate";
+
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -66,7 +73,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>ESP Turntable!</title>
+        <title>WiFi-Turntable!</title>
         <style>
             html {
                 font-family: Arial;
@@ -140,9 +147,13 @@ const char index_html[] PROGMEM = R"rawliteral(
                 cursor: pointer;
                 transition: background-color 200ms ease-in-out, transform 100ms ease-in-out;
             }
-
+            
             .button.pause {
                 background-color: #47b47d;
+            }
+            
+            .button.rotate {
+                background-color: #4cafaa;
             }
             
             .button:active {
@@ -195,32 +206,27 @@ const char index_html[] PROGMEM = R"rawliteral(
                 }
             }
         </style>
-
         <script>
             var sliderValue = 2;
         </script>
-
     </head>
 
     <body>
-        <h1>ESP tableturner!</h2>
+        <h1>WiFi Turntable!</h2>
             <p>Press the button after setting the amount of pictures desired to start the turntable. Press again to cancel the operation!</p>
             <div id="textSliderValue" class="value">2</div>
             <p><input type="range" onchange="updateSliderPWM(this)" id="pwmSlider" min="2" max="200" value="2" step="2" class="slider" data-show-value="true"></p>
-
             <p>Current pic:
-                <div class="value" id="pic">%COUNTER%<span>&percnt;</span></div>
+                <div class="value" id="pic"></div>
             </p>
-
             <p>
                 <input type="button" class="button" onclick="sendXHR(this)" value="Start!">
-               <input type="button" class="button pause" onclick="sendPAUSE(this)" value="Pause!">
-
+                <input type="button" class="button pause" onclick="sendPAUSE(this)" value="Pause!">
+                <input type="button" class="button rotate" onclick="sendROTATE(this)" value="Rotate!">
             </p>
             <script>
                 if (!!window.EventSource) {
                     var source = new EventSource('/events');
-
                     source.addEventListener('open', function(e) {
                         console.log("Events Connected");
                     }, false);
@@ -229,16 +235,17 @@ const char index_html[] PROGMEM = R"rawliteral(
                             console.log("Events Disconnected");
                         }
                     }, false);
-
                     source.addEventListener('message', function(e) {
                         console.log("message", e.data);
                     }, false);
-
                     source.addEventListener('photocount', function(e) {
                         console.log("photocount", e.data);
                         document.getElementById("pic").innerHTML = e.data;
                     }, false);
-
+                    source.addEventListener('rotation', function(e) {
+                        console.log("rotation", e.data);
+                        document.getElementById("pic").innerHTML = e.data;
+                    }, false);
                 }
 
                 function updateSliderPWM(element) {
@@ -253,7 +260,6 @@ const char index_html[] PROGMEM = R"rawliteral(
                     xhr.open("GET", "/slider?value=" + sliderValue, true);
                     xhr.send();
                     // console.log(sliderValue);
-
                 }
 
                 function sendPAUSE(element) {
@@ -263,14 +269,18 @@ const char index_html[] PROGMEM = R"rawliteral(
                     // console.log(sliderValue);
                 }
 
+                function sendROTATE(element) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "/slider?rotate=" + "CW", true);
+                    xhr.send();
+                    // console.log(sliderValue);
+                }
                 var elem = document.querySelector('input[type="range"]');
-
                 var rangeValue = function() {
                     var newValue = elem.value;
                     var target = document.querySelector('.value');
                     target.innerHTML = newValue;
                 }
-
                 elem.addEventListener("input", rangeValue);
             </script>
     </body>
@@ -295,7 +305,7 @@ void setup()
     Serial.begin(9600);
 
     myStepper.setAcceleration(300.0); //in stpes per second per second
-    myStepper.setMaxSpeed(400);       //in steps per second
+    myStepper.setMaxSpeed(500);       //in steps per second
 
     pinMode(output_LED, OUTPUT);
     digitalWrite(output_LED, LOW);
@@ -343,6 +353,15 @@ void setup()
 void loop()
 {
 
+    if (startRotate){
+      myStepper.move(80);
+
+      // Send Events to the Web Server with Rotation direction (CW)
+      msg = "CW";
+      events.send(String(msg).c_str(), "photocount", millis());
+      Motor_Delay(100);
+    
+      }
     if (PhotoTaken < sliderValue.toInt() && startPics)
     {
         // Send Events to the Web Server with the current pic count
@@ -351,6 +370,7 @@ void loop()
         events.send(String(msg).c_str(), "photocount", millis());
 
         digitalWrite(output_LED, LOW);
+        Move = myStepper.currentPosition();
         Move = Move + StepPerPhoto;
         myStepper.moveTo(Move);
         myStepper.runToPosition();
@@ -395,9 +415,11 @@ void loop()
         delay(500);
     }
 
-    //if the process was canceled or is finished OR PAUSE is pressed
-    if (!startPics && !startPause)
+    //if the process was canceled or is finished OR PAUSE is pressed and no rotation is going on
+    if (!startPics && !startPause && !startRotate)
     {
+        myStepper.stop();
+        
         PhotoTaken = 0;
         msg = "Stop";
         events.send(String(msg).c_str(), "photocount", millis());
@@ -418,7 +440,7 @@ void loop()
     }
 
     //to allow process time to "breathe"
-    Motor_Delay(100);
+//    Motor_Delay(100);
 }
 
 void onWsEvent(AsyncWebServerRequest *request)
@@ -432,20 +454,32 @@ void onWsEvent(AsyncWebServerRequest *request)
 
         startPics = !startPics;
         startPause = false;
+        startRotate = false;
 
         StepPerPhoto = FullRev / sliderValue.toInt(); //Calculate amount of steps per photo
         Serial.print("STARTPIC FLAG STATUS: ");
         Serial.println(startPics);
     }
-    // GET direction value on <ESP_IP>/rotate?direction=<direction>
+    // GET direction value on <ESP_IP>/slider?direction=<direction>
     else if (request->hasParam(PAUSE_INPUT))
     {
         pause_btn = request->getParam(PAUSE_INPUT)->value();
         startPics = false;
         startPause = !startPause;
+        startRotate = false;
 
         Serial.print("Pause operation: ");
         Serial.println(pause_btn);
+    }
+    else if (request->hasParam(ROTATE_INPUT))
+    {
+        rotate_btn = request->getParam(ROTATE_INPUT)->value();
+        startPics = false;
+        startPause = false;
+        startRotate = !startRotate;
+
+        Serial.print("Rotate operation: ");
+        Serial.println(rotate_btn);
     }
     else
     {
