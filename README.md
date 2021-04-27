@@ -65,7 +65,7 @@ The following shows how the UI is used to initiaite the table to take 2 photos o
 ## Future Work
 I would like to work on the following set of features in the future, but so far the basic core features of a photogtammetry turntable is met with good results.
 <ul>
- <li>Create a <b>Constant Turning Mode</b> that turns the turntable into a neat countertop ddecoration item!</li>
+ <li><s>Create a <b>Constant Turning Mode</b> that turns the turntable into a neat countertop ddecoration item!</s></li>
  <li>Add a form of animation to the site that shows shutter progress in a more "cool" manner, this one is rather ambigious, dont you think?</li>
  <li><s>Create a PCB for the whole project for better space managment, plus its cool to have it all in a "professional" look, right?</s></li>
 </ul>
