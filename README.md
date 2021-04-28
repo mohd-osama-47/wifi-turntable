@@ -38,6 +38,11 @@ The micrcontroller acts as an access point (through the use of the ESPASynchWebS
 <p align="center">
   <img src="/media/demo.gif/" alt="GIF of the UI">
 </p>
+The new version adds the option of constant rotation (clockwise or counter-clockwise) which also changes the rotation direction of the main photogrammetry mode.
+
+<p align="center">
+  <img src="/media/new_ui.jpg/" alt="screenshot of the new UI">
+</p>
 
 ## Circuit Schematic
 The circuit is rather basic, a bluetooth shutter is used here to trigger a phone acting as a camera to take pictures. A transistor is soldered on the buttons and is connected to the NodeMCU so that the button can be triggered. Once the user specifies the amount of pictures, the steps are calculated in the controller and the motor is turned accordingly. The following is a very simplified overview of what tahe circuit is like:
@@ -65,17 +70,22 @@ The following shows how the UI is used to initiaite the table to take 2 photos o
 ## Future Work
 I would like to work on the following set of features in the future, but so far the basic core features of a photogtammetry turntable is met with good results.
 <ul>
- <li><s>Create a <b>Constant Turning Mode</b> that turns the turntable into a neat countertop ddecoration item!</s></li>
+ <li><s>Create a <b>Constant Turning Mode</b> that turns the turntable into a neat countertop decoration item!</s><ul>
+   <li>New version allows for CW or CCW rotation which also controls the main mode's rotation direction in a rather easy to use manner!</li> 
+ </ul></li>
  <li>Add a form of animation to the site that shows shutter progress in a more "cool" manner, this one is rather ambigious, dont you think?</li>
- <li><s>Create a PCB for the whole project for better space managment, plus its cool to have it all in a "professional" look, right?</s></li>
+ <li><s>Create a PCB for the whole project for better space managment, plus its cool to have it all in a "professional" look, right?</s><ul>
+   <li>New circuit and PCB has a built in motor driver and fits in a rather small footprint, physical testing is next on the list!</li> 
+ </ul></li>
 </ul>
 
 ## Acknowledgments
-In no particular order, the following resources offored a great deal of technical info that was critical to the success of this project
-
+In no particular order, the following resources offored a great deal of technical info that was critical to the success of this project:
 <ul>
   <li><a href="https://randomnerdtutorials.com/" target="_blank">Random Nerd Tutorials:</a> Their tutorials on ESPs as webservers and other cool stuff were rather helpful!</li>
   <li><a href="https://hackaday.io/Bribro12" target="_blank">Brian Brocken:</a> His Arduino-based turntable was an aspiration for this project</li>
  <li><a href="https://codepen.io/juanbrujo" target="_blank">Jorge Epuñan:</a> Got the insperation for the slider from his CodePen page</li>
  <li><a href="https://www.thingiverse.com/thing:4167615" target="_blank">QLRO's AAScan:</a> Used a slightly modified version of their Solidworks model for the turnttable</li>
 </ul>
+
+Please give credit to "WiFi Turntable" and the resources used in the project in case you do use it, Thank you for reading! 
