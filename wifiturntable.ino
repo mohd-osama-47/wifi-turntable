@@ -17,6 +17,9 @@ const int output_LED = D4;
 const int output_Shutter = D0;
 int Move;
 
+//define rotation direction so that no heckups happen
+int rot_dir = 1;
+
 //for number of PICS
 String sliderValue = "0";
 
@@ -101,7 +104,7 @@ const char index_html[] PROGMEM = R"rawliteral(
                 text-shadow: white 1px 1px 1px;
                 /* width: 50%; */
                 /* height: 100vh; */
-                max-width: 400px;
+                max-width: 500px;
                 margin: 0px auto;
                 padding-bottom: 25px;
                 display: flex;
@@ -212,77 +215,85 @@ const char index_html[] PROGMEM = R"rawliteral(
     </head>
 
     <body>
-        <h1>WiFi Turntable!</h2>
-            <p>Press the button after setting the amount of pictures desired to start the turntable. Press again to cancel the operation!</p>
-            <div id="textSliderValue" class="value">2</div>
-            <p><input type="range" onchange="updateSliderPWM(this)" id="pwmSlider" min="2" max="200" value="2" step="2" class="slider" data-show-value="true"></p>
-            <p>Current pic:
-                <div class="value" id="pic"></div>
-            </p>
-            <p>
-                <input type="button" class="button" onclick="sendXHR(this)" value="Start!">
-                <input type="button" class="button pause" onclick="sendPAUSE(this)" value="Pause!">
-                <input type="button" class="button rotate" onclick="sendROTATE(this)" value="Rotate!">
-            </p>
-            <script>
-                if (!!window.EventSource) {
-                    var source = new EventSource('/events');
-                    source.addEventListener('open', function(e) {
-                        console.log("Events Connected");
-                    }, false);
-                    source.addEventListener('error', function(e) {
-                        if (e.target.readyState != EventSource.OPEN) {
-                            console.log("Events Disconnected");
-                        }
-                    }, false);
-                    source.addEventListener('message', function(e) {
-                        console.log("message", e.data);
-                    }, false);
-                    source.addEventListener('photocount', function(e) {
-                        console.log("photocount", e.data);
-                        document.getElementById("pic").innerHTML = e.data;
-                    }, false);
-                    source.addEventListener('rotation', function(e) {
-                        console.log("rotation", e.data);
-                        document.getElementById("pic").innerHTML = e.data;
-                    }, false);
-                }
+        <h1>WiFi Turntable!</h1>
+        <p>Press the button after setting the amount of pictures desired to start the turntable. Press again to cancel the operation!</p>
+        <div id="textSliderValue" class="value">2</div>
+        <p><input type="range" onchange="updateSliderPWM(this)" id="pwmSlider" min="2" max="200" value="2" step="2" class="slider" data-show-value="true"></p>
+        <p>Current Process:
+            <div class="value" id="pic"></div>
+        </p>
+        <p>
+            <input type="button" class="button" onclick="sendXHR(this)" value="Start">
+            <input type="button" class="button pause" onclick="sendPAUSE(this)" value="Pause">
+            <input type="button" class="button rotate" onclick="sendROTATE1(this)" value="&#10227;">
+            <input type="button" class="button rotate" onclick="sendROTATE2(this)" value="&#10226;">
+        </p>
+        <script>
+            if (!!window.EventSource) {
+                var source = new EventSource('/events');
+                source.addEventListener('open', function(e) {
+                    console.log("Events Connected");
+                }, false);
+                source.addEventListener('error', function(e) {
+                    if (e.target.readyState != EventSource.OPEN) {
+                        console.log("Events Disconnected");
+                    }
+                }, false);
+                source.addEventListener('message', function(e) {
+                    console.log("message", e.data);
+                }, false);
+                source.addEventListener('photocount', function(e) {
+                    console.log("photocount", e.data);
+                    document.getElementById("pic").innerHTML = e.data;
+                }, false);
+                source.addEventListener('rotation', function(e) {
+                    console.log("rotation", e.data);
+                    document.getElementById("pic").innerHTML = e.data;
+                }, false);
+            }
 
-                function updateSliderPWM(element) {
-                    sliderValue = document.getElementById("pwmSlider").value;
-                    document.getElementById("textSliderValue").innerHTML = sliderValue;
-                    console.log(sliderValue);
-                }
+            function updateSliderPWM(element) {
+                sliderValue = document.getElementById("pwmSlider").value;
+                document.getElementById("textSliderValue").innerHTML = sliderValue;
+                console.log(sliderValue);
+            }
 
-                function sendXHR(element) {
-                    sliderValue = document.getElementById("pwmSlider").value;
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/slider?value=" + sliderValue, true);
-                    xhr.send();
-                    // console.log(sliderValue);
-                }
+            function sendXHR(element) {
+                sliderValue = document.getElementById("pwmSlider").value;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/slider?value=" + sliderValue, true);
+                xhr.send();
+                // console.log(sliderValue);
+            }
 
-                function sendPAUSE(element) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/slider?direction=" + "PAUSE", true);
-                    xhr.send();
-                    // console.log(sliderValue);
-                }
+            function sendPAUSE(element) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/slider?direction=" + "PAUSE", true);
+                xhr.send();
+                // console.log(sliderValue);
+            }
 
-                function sendROTATE(element) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/slider?rotate=" + "CW", true);
-                    xhr.send();
-                    // console.log(sliderValue);
-                }
-                var elem = document.querySelector('input[type="range"]');
-                var rangeValue = function() {
-                    var newValue = elem.value;
-                    var target = document.querySelector('.value');
-                    target.innerHTML = newValue;
-                }
-                elem.addEventListener("input", rangeValue);
-            </script>
+            function sendROTATE1(element) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/slider?rotate=" + "CW", true);
+                xhr.send();
+                // console.log(sliderValue);
+            }
+
+            function sendROTATE2(element) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/slider?rotate=" + "CCW", true);
+                xhr.send();
+                // console.log(sliderValue);
+            }
+            var elem = document.querySelector('input[type="range"]');
+            var rangeValue = function() {
+                var newValue = elem.value;
+                var target = document.querySelector('.value');
+                target.innerHTML = newValue;
+            }
+            elem.addEventListener("input", rangeValue);
+        </script>
     </body>
 
 </html>
@@ -305,7 +316,8 @@ void setup()
     Serial.begin(9600);
 
     myStepper.setAcceleration(300.0); //in stpes per second per second
-    myStepper.setMaxSpeed(500);       //in steps per second
+    myStepper.setSpeed(200);
+    myStepper.setMaxSpeed(600);       //in steps per second
 
     pinMode(output_LED, OUTPUT);
     digitalWrite(output_LED, LOW);
@@ -354,10 +366,10 @@ void loop()
 {
 
     if (startRotate){
-      myStepper.move(80);
-
+      if (rotate_btn == "CW") {myStepper.move(100); msg = "&#10227;"; rot_dir = 1;}
+      if (rotate_btn == "CCW") {myStepper.move(-100); msg = "&#10226;"; rot_dir = -1;}
+     
       // Send Events to the Web Server with Rotation direction (CW)
-      msg = "CW";
       events.send(String(msg).c_str(), "photocount", millis());
       Motor_Delay(100);
     
@@ -371,7 +383,7 @@ void loop()
 
         digitalWrite(output_LED, LOW);
         Move = myStepper.currentPosition();
-        Move = Move + StepPerPhoto;
+        Move = Move + (rot_dir * StepPerPhoto);
         myStepper.moveTo(Move);
         myStepper.runToPosition();
         PhotoTaken = PhotoTaken + 1; //Add 1 to photos taken
@@ -419,6 +431,7 @@ void loop()
     if (!startPics && !startPause && !startRotate)
     {
         myStepper.stop();
+        myStepper.setCurrentPosition(0);
         
         PhotoTaken = 0;
         msg = "Stop";
